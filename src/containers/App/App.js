@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import './style.css';
-import Header from 'components/Header/Header.js';
-import Footer from 'components/Footer/Footer.js';
+import './App.css';
+import Header from 'components/Header/Header';
+import Footer from 'components/Footer/Footer';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <Header/>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div class="container">
+          <div class="row">
+            <div class="col-6">Something</div>
+            <div class="col-6">Something2</div>
+          </div>
+          <div class="row">
+            <div class="col-6">Something3</div>
+            <div class="col-6">Something4</div>
+          </div>
+        </div>
         <Footer/>
       </div>
     );
