@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import Header from 'components/Header/Header';
 import Footer from 'components/Footer/Footer';
-import Content from 'components/Content';
+import Router from 'containers/Router';
 
 import './App.css';
 
@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header/>
-        <Content/>
+        <Router/>
         <Footer/>
       </div>
     );
