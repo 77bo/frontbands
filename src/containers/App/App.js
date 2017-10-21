@@ -7,11 +7,17 @@ import Router from 'containers/Router';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: null,
+    };
+  }
   render() {
     return (
       <div className="App">
         <Header/>
-        <Router/>
+        <Router location={this.props.location} />
         <Footer/>
       </div>
     );
