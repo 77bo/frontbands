@@ -44,7 +44,7 @@ class App extends Component {
     var language = (navigator.languages && navigator.languages[0]) ||
       navigator.language ||
       navigator.userLanguage;
-    console.log(language);
+
     if (!language || !~supportedLanguages.indexOf(language)) {
       language = 'uk';
     }
@@ -56,14 +56,11 @@ class App extends Component {
     var messages = translationsData[language] || translationsData[languageWithoutRegionCode]
       || translationsData.uk_UA;
 
-    console.log(language);
-    console.log(messages);
     this.state.language = language;
     this.state.messages = messages;
   }
 
   changeLanguage(language) {
-    console.debug('language is changed:', language);
     var messages = translationsData[language] || translationsData.uk_UA;
     this.setState({
       languageProp: language,
