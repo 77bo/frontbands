@@ -53,7 +53,7 @@ class App extends Component {
     const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
 
     // Try full locale, fallback to locale without region code, fallback to en
-    var messages = translationsData[languageWithoutRegionCode] || translationsData[language]
+    var messages = translationsData[language] || translationsData[languageWithoutRegionCode]
       || translationsData.uk_UA;
 
     console.log(language);
