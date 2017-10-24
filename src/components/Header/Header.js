@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import {intlShape, injectIntl} from 'react-intl';
 
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 
@@ -34,6 +35,12 @@ class Header extends Component {
                 <Link to='/about'>About</Link>
               </NavItem>
             </Nav>
+            <button onClick={() => this.props.changeLanguage('uk')}>
+              Українська
+            </button>
+            <button onClick={() => this.props.changeLanguage('en')}>
+              English
+            </button>
           </Collapse>
         </Navbar>
       </header>
@@ -41,4 +48,8 @@ class Header extends Component {
   }
 }
 
-export default Header;
+Header.propTypes = {
+  intl: intlShape.isRequired,
+};
+
+export default injectIntl(Header);

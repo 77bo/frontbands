@@ -7,7 +7,7 @@ class Home extends Component {
       <div className="home">
         <div className="container">
           <div className="row text-center">
-            <FormattedMessage id="page.title"/>
+            <FormattedMessage id="page.home.title"/>
             <div className="col-6"><img width="200" src="https://www.gitbook.com/cover/book/mongkuen/react.jpg?build=1470682429235" /></div>
           </div>
         </div>
