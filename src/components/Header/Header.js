@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {intlShape, injectIntl} from 'react-intl';
 
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
 
 import './Header.css';
 
@@ -35,12 +35,12 @@ class Header extends Component {
                 <Link to='/about'>About</Link>
               </NavItem>
             </Nav>
-            <button onClick={() => this.props.changeLanguage('uk')}>
+            <Button outline color="info" size="sm" onClick={() => this.props.changeLanguage('uk')}>
               Українська
-            </button>
-            <button onClick={() => this.props.changeLanguage('en')}>
+            </Button>
+            <Button outline color="info" size="sm" onClick={() => this.props.changeLanguage('en')}>
               English
-            </button>
+            </Button>
           </Collapse>
         </Navbar>
       </header>
