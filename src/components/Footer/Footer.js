@@ -1,15 +1,26 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {intlShape, injectIntl} from 'react-intl';
 
 import './Footer.css';
 
 class Footer extends Component {
+
   render() {
     return (
-      <footer class="mainfooter" role="contentinfo">
-
+      <footer className="mainfooter" role="contentinfo">
+        <button onClick={() => this.props.changeLanguage('uk')}>
+          Українська
+        </button>
+        <button onClick={() => this.props.changeLanguage('en')}>
+          English
+        </button>
       </footer>
     );
   }
 }
 
-export default Footer;
+Footer.propTypes = {
+  intl: intlShape.isRequired,
+};
+
+export default injectIntl(Footer);

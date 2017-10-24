@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {FormattedMessage} from 'react-intl';
 
 class About extends Component {
   render() {
@@ -6,7 +7,9 @@ class About extends Component {
       <div className="about">
         <div className="container">
           <div className="row">
-            <div className="col-12">This is ABOUT!</div>
+            <div className="col-12">
+              <FormattedMessage id="page.about.title"/>
+            </div>
           </div>
         </div>
       </div>
