@@ -12,6 +12,7 @@ class Navigation extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+
     this.state = {
       isOpen: false
     };
@@ -26,7 +27,7 @@ class Navigation extends Component {
   render() {
     return (
       <Navbar light className="navigation-component" fixed="top" expand="md">
-        <NavbarBrand to="/">Front Bands</NavbarBrand>
+        <NavbarBrand to="/"><FormattedMessage id="header.navigation.brand.title" defaultMessage="Deepwine" /></NavbarBrand>
         <NavbarToggler onClick={this.toggle}/>
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>

@@ -1,5 +1,5 @@
 .language-selector button {
-    font-size: small;
+    font-size: 8pt;
 }
 
 .language-selector button:hover {
@@ -7,7 +7,7 @@
 }
 
 .navigation-component {
-    height: 80px;
+    min-height: 80px;
     margin-bottom: 15px;
     background-color: rgba(255,255,255,0.98);
 }
