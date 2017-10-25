@@ -25,7 +25,7 @@ class Navigation extends Component {
 
   render() {
     return (
-      <Navbar light className="bg-light" fixed="top" expand="md">
+      <Navbar light className="navigation-component" fixed="top" expand="md">
         <NavbarBrand to="/">Front Bands</NavbarBrand>
         <NavbarToggler onClick={this.toggle}/>
         <Collapse isOpen={this.state.isOpen} navbar>

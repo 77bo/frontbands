@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
-
 import {Jumbotron, Button} from 'reactstrap';
+
+import FullScreenImage from 'components/FullScreenImage/FullScreenImage';
 
 class Home extends Component {
   render() {
     return (
+      <FullScreenImage>
       <div className="home">
         <div className="container">
           <Jumbotron>
@@ -29,6 +31,7 @@ class Home extends Component {
           </div>
         </div>
       </div>
+      </FullScreenImage>
     );
   }
 }

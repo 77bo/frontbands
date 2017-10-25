@@ -30,18 +30,16 @@ const Router = (props) => {
   return (
     <TransitionGroup>
       <PageFade key={locationKey}>
-        <main className="container">
-          <Switch location={props.location}>
-            <Route exact path='/' component={Home}/>
-            <Route path='/news' component={News}/>
-            <Route path='/tour' component={Tour}/>
-            <Route path='/band' component={Band}/>
-            <Route path='/music' component={Music}/>
-            <Route path='/video' component={Video}/>
-            <Route path='/contact' component={Contact}/>
-            <Route component={Errors.NotFound}/>
-          </Switch>
-        </main>
+        <Switch location={props.location}>
+          <Route exact path='/' component={Home}/>
+          <Route path='/news' component={News}/>
+          <Route path='/tour' component={Tour}/>
+          <Route path='/band' component={Band}/>
+          <Route path='/music' component={Music}/>
+          <Route path='/video' component={Video}/>
+          <Route path='/contact' component={Contact}/>
+          <Route component={Errors.NotFound}/>
+        </Switch>
       </PageFade>
     </TransitionGroup>
   );

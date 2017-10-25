@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
 
+import FullScreenImage from 'components/FullScreenImage/FullScreenImage';
+
 class News extends Component {
   render() {
     return (
+      <FullScreenImage>
       <div className="band">
         <div className="container">
           <div className="row">
@@ -13,6 +16,7 @@ class News extends Component {
           </div>
         </div>
       </div>
+      </FullScreenImage>
     );
   }
 }
