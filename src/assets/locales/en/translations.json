@@ -1,4 +1,10 @@
 {
   "page.home.title": "Welcome!!!",
-  "page.about.title": "About band"
+  "page.about.title": "About band",
+  "header.navigation.button.news.title": "News",
+  "header.navigation.button.tour.title": "Tour Dates",
+  "header.navigation.button.band.title": "Band",
+  "header.navigation.button.music.title": "Music",
+  "header.navigation.button.video.title": "Video",
+  "header.navigation.button.contact.title": "Contacts"
 }

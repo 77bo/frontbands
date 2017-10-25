@@ -1,0 +1,11 @@
+.brand-name {
+    width: 100%;
+    color: #6c757d;
+    font-family: 'Rakkas', cursive;
+    font-size: larger;
+}
+
+.brand-name:hover {
+    color: #6c757d;
+    text-decoration: none;
+}

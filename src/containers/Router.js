@@ -4,7 +4,12 @@ import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import anime from 'animejs';
 
 import Home from 'containers/Home/Home';
-import About from 'containers/About/About';
+import News from 'containers/News/News';
+import Tour from 'containers/Tour/Tour';
+import Band from 'containers/Band/Band';
+import Music from 'containers/Music/Music';
+import Video from 'containers/Video/Video';
+import Contact from 'containers/Contact/Contact';
 
 import Errors from 'components/Errors/Errors';
 
@@ -28,7 +33,12 @@ const Router = (props) => {
         <main className="container">
           <Switch location={props.location}>
             <Route exact path='/' component={Home}/>
-            <Route path='/about' component={About}/>
+            <Route path='/news' component={News}/>
+            <Route path='/tour' component={Tour}/>
+            <Route path='/band' component={Band}/>
+            <Route path='/music' component={Music}/>
+            <Route path='/video' component={Video}/>
+            <Route path='/contact' component={Contact}/>
             <Route component={Errors.NotFound}/>
           </Switch>
         </main>

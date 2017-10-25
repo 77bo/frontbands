@@ -1,0 +1,7 @@
+.language-selector button {
+    font-size: small;
+}
+
+.language-selector button:hover {
+    cursor: pointer;
+}
