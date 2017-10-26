@@ -41,7 +41,8 @@ class App extends Component {
     // Define user's language. Different browsers have the user locale defined
     // on different fields on the `navigator` object, so we make sure to account
     // for these different by checking all of them
-    var language = (navigator.languages && navigator.languages[0]) ||
+    let previouslyChosenLanguage = localStorage.getItem('app_selected_language');
+    var language = previouslyChosenLanguage || (navigator.languages && navigator.languages[0]) ||
       navigator.language ||
       navigator.userLanguage;
 
@@ -62,6 +63,8 @@ class App extends Component {
 
   changeLanguage(language) {
     var messages = translationsData[language] || translationsData.uk_UA;
+    // store selected language for cases when user refreshes a page
+    localStorage.setItem('app_selected_language', language);
     this.setState({
       languageProp: language,
       messages: messages
