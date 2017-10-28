@@ -1,0 +1,26 @@
+.part-screen-image {
+    width: 100vw;
+    height: 40vh;
+
+    /* The image used */
+    /*background-image: url("../../assets/images/news_cover.jpg");*/
+    background-image: url("https://scontent.flwo1-1.fna.fbcdn.net/v/t31.0-8/19092799_139599703271191_4820004408878050408_o.jpg?oh=bf3ba322ef663802afd15437e7e67fb4&oe=5A63990C");
+    /*background-color: #1b1e21;*/
+
+    /* Center and scale the image nicely */
+    background-position: 0 -28vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    opacity: 1;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+}
+
+.part-screen-image h1 {
+    font-family: 'Comfortaa', cursive;
+}
+.part-screen-image p {
+    font-family: 'Open Sans';
+}

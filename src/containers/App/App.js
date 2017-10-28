@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import moment from 'moment';
+import 'moment/locale/uk';
 
 import Router from 'containers/Router';
 import Header from 'components/Header/Header';
@@ -31,7 +33,10 @@ class App extends Component {
 
     this.changeLanguage = this.changeLanguage.bind(this);
     this.loadTranslations.bind(this);
+  }
 
+  componentWillMount() {
+    console.debug('loading translation...');
     this.loadTranslations();
   }
 
@@ -52,6 +57,9 @@ class App extends Component {
 
     // Split locales with a region code
     const languageWithoutRegionCode = language.toLowerCase().split(/[_-]+/)[0];
+
+    // setup moment locale
+    moment.locale(languageWithoutRegionCode);
 
     // Try full locale, fallback to locale without region code, fallback to en
     var messages = translationsData[language] || translationsData[languageWithoutRegionCode]

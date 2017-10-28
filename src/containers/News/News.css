@@ -1,0 +1,15 @@
+.news-heading {
+    color: white;
+}
+
+.container.header-padding {
+    padding-top: 22vh;
+}
+
+.container.container-padding {
+    padding-top: 25px;
+}
+
+.feed-item {
+    padding: 15px;
+}
