@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {
   Container, Row, Col, Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, CardLink
+  CardTitle, CardSubtitle, CardLink, Button
 } from 'reactstrap';
 import ReactPlayer from 'react-player';
 import moment from 'moment';
@@ -16,11 +16,17 @@ class News extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feed: []
+      feed: [],
+      hasNext: null
     };
+    this.load.bind(this);
   }
 
   componentDidMount() {
+    this.load();
+  }
+
+  load() {
     var url = 'http://localhost:3001/api/feed';
     axios.get(url, {
       params: {
@@ -28,11 +34,17 @@ class News extends Component {
           'id', 'type', 'story', 'full_picture', 'message',
           'link', 'name', 'permalink_url', 'place', 'source',
           'created_time', 'description', 'shares', 'caption'
-        ]
-      }
+        ],
+        next: this.state.hasNext
+      },
+      withCredentials: true
     }).then(function (response) {
-      console.debug(response.data, this);
-      this.setState({feed: response.data.data});
+      let feed = response.data.data;
+      feed = this.state.feed.concat(feed);
+      this.setState({
+        feed: feed,
+        hasNext: response.data.next
+      });
     }.bind(this)).catch(function (error) {
       console.error(error.response.data);
     });
@@ -56,12 +68,17 @@ class News extends Component {
         <Container className="container-padding">
           {
             this.state.feed.map(feedItem => (
-              <Row className="feed-item">
-                <Col sm="6" md={{size: 6, offset: 3}}>
-                  <FeedItem item={feedItem}/>
-                </Col>
-              </Row>
+              <FeedItem key={feedItem.id} item={feedItem}/>
             ))
+          }
+          {this.state.hasNext &&
+            <Row className="feed-item text-center">
+              <Col sm="6" md={{size: 6, offset: 3}}>
+                <Button outline color="primary" size="md" onClick={() => this.load(this.state.hasNext)}>
+                  <FormattedMessage id="page.news.button.hasNext" defaultMessage='Завантажити ще'/>
+                </Button>
+              </Col>
+            </Row>
           }
         </Container>
       </span>
@@ -71,42 +88,49 @@ class News extends Component {
 
 class FeedItem extends Component {
   render() {
-    const choose = item => {
+    const chooseFeedItemType = item => {
       let component;
       switch (item.type) {
         case 'link':
-          component = <FeedItemLink item={item} />
+          component = <FeedItemLink item={item}/>
           break;
         case 'video':
-          component = <FeedItemVideo item={item} />
+          component = <FeedItemVideo item={item}/>
           break;
         case 'photo':
-          // show photo items only with url for them
+          // show photo items only with url&message for them
           if (item.permalink_url && item.message) {
-            component = <FeedItemPhoto item={item} />
+            component = <FeedItemPhoto item={item}/>
           }
           break;
         case 'event':
-          component = <FeedItemEvent item={item} />
+          component = <FeedItemEvent item={item}/>
           break;
         case 'status':
           // no need to show status without any message
           if (item.message) {
-            component = <FeedItemStatus item={item} />
+            component = <FeedItemStatus item={item}/>
           }
           break;
         default:
-          // component = <FeedItemDefault item={item} />
+        // component = <FeedItemDefault item={item} />
       }
 
-      return component;
+      let wrap = null;
+      if (component) {
+        wrap = (
+          <Row className="feed-item">
+            <Col sm="6" md={{size: 6, offset: 3}}>
+              {component}
+            </Col>
+          </Row>
+        );
+      }
+
+      return wrap;
     };
 
-    return (
-      <div>
-        {choose(this.props.item)}
-      </div>
-    );
+    return (chooseFeedItemType(this.props.item));
   }
 }
 
@@ -146,7 +170,7 @@ class FeedItemVideo extends Component {
         {this.props.item.message && <CardBody>
           <CardText>{this.props.item.message}</CardText>
         </CardBody>}
-        <ReactPlayer width="100%" url={this.props.item.source} controls />
+        <ReactPlayer width="100%" url={this.props.item.source} controls/>
       </Card>
     );
   }
@@ -167,7 +191,7 @@ class FeedItemPhoto extends Component {
         {this.props.item.message && <CardBody>
           <CardText>{this.props.item.message}</CardText>
         </CardBody>}
-        <img width="100%" src={this.props.item.full_picture}/>
+        <CardImg width="100%" src={this.props.item.full_picture}/>
       </Card>
     );
   }
@@ -188,7 +212,7 @@ class FeedItemEvent extends Component {
         <CardBody>
           <CardText>{this.props.item.name}</CardText>
         </CardBody>
-        <img width="100%" src={this.props.item.full_picture}/>
+        <CardImg width="100%" src={this.props.item.full_picture}/>
       </Card>
     );
   }
@@ -209,7 +233,7 @@ class FeedItemStatus extends Component {
         {this.props.item.message && <CardBody>
           <CardText>{this.props.item.message}</CardText>
         </CardBody>}
-        <img width="100%" src={this.props.item.full_picture}/>
+        <CardImg width="100%" src={this.props.item.full_picture}/>
       </Card>
     );
   }
