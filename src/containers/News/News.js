@@ -27,7 +27,7 @@ class News extends Component {
   }
 
   load() {
-    var url = 'http://localhost:3001/api/feed';
+    var url = process.env.API_ROOT + '/feed';
     axios.get(url, {
       params: {
         fields: [
