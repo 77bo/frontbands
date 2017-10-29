@@ -40,6 +40,10 @@ class App extends Component {
     this.loadTranslations();
   }
 
+  getLocale() {
+
+  }
+
   loadTranslations() {
     const supportedLanguages = ['uk', 'en'];
 
@@ -67,10 +71,13 @@ class App extends Component {
 
     this.state.language = language;
     this.state.messages = messages;
+    localStorage.setItem('app_selected_language', language);
   }
 
   changeLanguage(language) {
     var messages = translationsData[language] || translationsData.uk_UA;
+    // setup moment locale
+    moment.locale(language);
     // store selected language for cases when user refreshes a page
     localStorage.setItem('app_selected_language', language);
     this.setState({

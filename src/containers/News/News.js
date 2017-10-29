@@ -5,10 +5,10 @@ import {
   CardTitle, CardSubtitle, CardLink, Button
 } from 'reactstrap';
 import ReactPlayer from 'react-player';
-import moment from 'moment';
 import axios from 'axios';
 
 import PartScreenImage from 'components/PartScreenImage/PartScreenImage';
+import {formatDateRelatively, fullDateFormat} from 'services/momentService';
 
 import './News.css';
 
@@ -35,6 +35,7 @@ class News extends Component {
           'link', 'name', 'permalink_url', 'place', 'source',
           'created_time', 'description', 'shares', 'caption'
         ],
+        locale: localStorage.getItem('app_selected_language'),
         next: this.state.hasNext
       },
       withCredentials: true
@@ -72,13 +73,13 @@ class News extends Component {
             ))
           }
           {this.state.hasNext &&
-            <Row className="feed-item text-center">
-              <Col sm="6" md={{size: 6, offset: 3}}>
-                <Button outline color="primary" size="md" onClick={() => this.load(this.state.hasNext)}>
-                  <FormattedMessage id="page.news.button.hasNext" defaultMessage='Завантажити ще'/>
-                </Button>
-              </Col>
-            </Row>
+          <Row className="feed-item text-center">
+            <Col sm="6" md={{size: 6, offset: 3}}>
+              <Button outline color="primary" size="md" onClick={() => this.load(this.state.hasNext)}>
+                <FormattedMessage id="page.news.button.hasNext" defaultMessage='Завантажити ще'/>
+              </Button>
+            </Col>
+          </Row>
           }
         </Container>
       </span>
@@ -92,24 +93,24 @@ class FeedItem extends Component {
       let component;
       switch (item.type) {
         case 'link':
-          component = <FeedItemLink item={item}/>
+          component = <FeedItemLink item={item}/>;
           break;
         case 'video':
-          component = <FeedItemVideo item={item}/>
+          component = <FeedItemVideo item={item}/>;
           break;
         case 'photo':
           // show photo items only with url&message for them
           if (item.permalink_url && item.message) {
-            component = <FeedItemPhoto item={item}/>
+            component = <FeedItemPhoto item={item}/>;
           }
           break;
         case 'event':
-          component = <FeedItemEvent item={item}/>
+          component = <FeedItemEvent item={item}/>;
           break;
         case 'status':
           // no need to show status without any message
           if (item.message) {
-            component = <FeedItemStatus item={item}/>
+            component = <FeedItemStatus item={item}/>;
           }
           break;
         default:
@@ -141,8 +142,9 @@ class FeedItemLink extends Component {
         <CardBody>
           <CardTitle>{this.props.item.name || this.props.item.story}</CardTitle>
           <CardSubtitle>
-            <CardLink target="_blank" href={this.props.item.permalink_url}>
-              {moment(this.props.item.created_time).startOf('hour').fromNow()}
+            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
+                      target="_blank" href={this.props.item.permalink_url}>
+              {formatDateRelatively(this.props.item.created_time)}
             </CardLink>
           </CardSubtitle>
         </CardBody>
@@ -162,8 +164,9 @@ class FeedItemVideo extends Component {
         <CardBody>
           <CardTitle>{this.props.item.name || this.props.item.story}</CardTitle>
           <CardSubtitle>
-            <CardLink target="_blank" href={this.props.item.permalink_url}>
-              {moment(this.props.item.created_time).startOf('hour').fromNow()}
+            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
+                      target="_blank" href={this.props.item.permalink_url}>
+              {formatDateRelatively(this.props.item.created_time)}
             </CardLink>
           </CardSubtitle>
         </CardBody>
@@ -183,8 +186,9 @@ class FeedItemPhoto extends Component {
         <CardBody>
           <CardTitle>{this.props.item.story}</CardTitle>
           <CardSubtitle>
-            <CardLink target="_blank" href={this.props.item.permalink_url}>
-              {moment(this.props.item.created_time).startOf('hour').fromNow()}
+            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
+                      target="_blank" href={this.props.item.permalink_url}>
+              {formatDateRelatively(this.props.item.created_time)}
             </CardLink>
           </CardSubtitle>
         </CardBody>
@@ -204,8 +208,9 @@ class FeedItemEvent extends Component {
         <CardBody>
           <CardTitle>{this.props.item.story}</CardTitle>
           <CardSubtitle>
-            <CardLink target="_blank" href={this.props.item.permalink_url}>
-              {moment(this.props.item.created_time).startOf('hour').fromNow()}
+            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
+                      target="_blank" href={this.props.item.permalink_url}>
+              {formatDateRelatively(this.props.item.created_time)}
             </CardLink>
           </CardSubtitle>
         </CardBody>
@@ -225,8 +230,9 @@ class FeedItemStatus extends Component {
         <CardBody>
           <CardTitle>{this.props.item.story}</CardTitle>
           <CardSubtitle>
-            <CardLink target="_blank" href={this.props.item.permalink_url}>
-              {moment(this.props.item.created_time).startOf('hour').fromNow()}
+            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
+                      target="_blank" href={this.props.item.permalink_url}>
+              {formatDateRelatively(this.props.item.created_time)}
             </CardLink>
           </CardSubtitle>
         </CardBody>
