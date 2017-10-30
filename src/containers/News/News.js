@@ -5,6 +5,7 @@ import {
   CardTitle, CardSubtitle, CardLink, Button
 } from 'reactstrap';
 import ReactPlayer from 'react-player';
+import Spinner from 'react-spinkit';
 import axios from 'axios';
 
 import PartScreenImage from 'components/PartScreenImage/PartScreenImage';
@@ -17,7 +18,8 @@ class News extends Component {
     super(props);
     this.state = {
       feed: [],
-      hasNext: null
+      hasNext: null,
+      loading: true
     };
     this.load.bind(this);
   }
@@ -44,7 +46,8 @@ class News extends Component {
       feed = this.state.feed.concat(feed);
       this.setState({
         feed: feed,
-        hasNext: response.data.next
+        hasNext: response.data.next,
+        loading: false
       });
     }.bind(this)).catch(function (error) {
       console.error(error.response.data);
@@ -67,6 +70,7 @@ class News extends Component {
           </Container>
         </PartScreenImage>
         <Container className="container-padding">
+          {this.state.loading && <Spinner className="center-spinner" name="line-scale" fadeIn="half" color="#6c757d" />}
           {
             this.state.feed.map(feedItem => (
               <FeedItem key={feedItem.id} item={feedItem}/>
@@ -173,11 +177,19 @@ class FeedItemVideo extends Component {
         {this.props.item.message && <CardBody>
           <CardText>{this.props.item.message}</CardText>
         </CardBody>}
-        <ReactPlayer width="100%" url={this.props.item.source} controls/>
+        <ReactPlayer width="100%" url={this.props.item.source}
+                     playing={this.props.playing} controls
+                     onPlay={() => {
+                       console.log('playing', this);
+                       this.props.playing = false;
+                     }}/>
       </Card>
     );
   }
 }
+FeedItemVideo.defaultProps = {
+  playing: false
+};
 
 class FeedItemPhoto extends Component {
   render() {
