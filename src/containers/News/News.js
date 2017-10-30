@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import {FormattedMessage} from 'react-intl';
 import {
-  Container, Row, Col, Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, CardLink, Button
+  Container, Row, Col, Button
 } from 'reactstrap';
-import ReactPlayer from 'react-player';
 import Spinner from 'react-spinkit';
 import axios from 'axios';
+import _ from 'lodash';
 
 import PartScreenImage from 'components/PartScreenImage/PartScreenImage';
-import {formatDateRelatively, fullDateFormat} from 'services/momentService';
+import FeedItem from 'containers/News/FeedItem';
 
 import './News.css';
 
@@ -21,7 +20,7 @@ class News extends Component {
       hasNext: null,
       loading: true
     };
-    this.load.bind(this);
+    this.videoStartedPlaying = this.videoStartedPlaying.bind(this);
   }
 
   componentDidMount() {
@@ -54,6 +53,21 @@ class News extends Component {
     });
   }
 
+  // if user started new video all others should be stopped.
+  videoStartedPlaying(feedItemId) {
+    // filtering all feedItemVideos except one which user started last.
+    // TODO user findIndex instead of map.
+    let feed = this.state.feed.map(o => {
+      if (o.playing && o.id !== feedItemId) {
+        o.playing = false;
+      }
+      return o;
+    });
+    this.setState({
+      feed: feed
+    });
+  }
+
   render() {
     return (
       <span>
@@ -72,9 +86,11 @@ class News extends Component {
         <Container className="container-padding">
           {this.state.loading && <Spinner className="center-spinner" name="line-scale" fadeIn="half" color="#6c757d" />}
           {
-            this.state.feed.map(feedItem => (
-              <FeedItem key={feedItem.id} item={feedItem}/>
-            ))
+            this.state.feed.map(feedItem => {
+              return (
+                  <FeedItem key={feedItem.id} item={feedItem} videoStartedPlaying={this.videoStartedPlaying}/>
+                );
+              })
           }
           {this.state.hasNext &&
           <Row className="feed-item text-center">
@@ -90,172 +106,5 @@ class News extends Component {
     );
   }
 }
-
-class FeedItem extends Component {
-  render() {
-    const chooseFeedItemType = item => {
-      let component;
-      switch (item.type) {
-        case 'link':
-          component = <FeedItemLink item={item}/>;
-          break;
-        case 'video':
-          component = <FeedItemVideo item={item}/>;
-          break;
-        case 'photo':
-          // show photo items only with url&message for them
-          if (item.permalink_url && item.message) {
-            component = <FeedItemPhoto item={item}/>;
-          }
-          break;
-        case 'event':
-          component = <FeedItemEvent item={item}/>;
-          break;
-        case 'status':
-          // no need to show status without any message
-          if (item.message) {
-            component = <FeedItemStatus item={item}/>;
-          }
-          break;
-        default:
-        // component = <FeedItemDefault item={item} />
-      }
-
-      let wrap = null;
-      if (component) {
-        wrap = (
-          <Row className="feed-item">
-            <Col sm="6" md={{size: 6, offset: 3}}>
-              {component}
-            </Col>
-          </Row>
-        );
-      }
-
-      return wrap;
-    };
-
-    return (chooseFeedItemType(this.props.item));
-  }
-}
-
-class FeedItemLink extends Component {
-  render() {
-    return (
-      <Card>
-        <CardBody>
-          <CardTitle>{this.props.item.name || this.props.item.story}</CardTitle>
-          <CardSubtitle>
-            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
-                      target="_blank" href={this.props.item.permalink_url}>
-              {formatDateRelatively(this.props.item.created_time)}
-            </CardLink>
-          </CardSubtitle>
-        </CardBody>
-        {this.props.item.message && <CardBody>
-          <CardText>{this.props.item.message}</CardText>
-        </CardBody>}
-        <img width="100%" src={this.props.item.full_picture}/>
-      </Card>
-    );
-  }
-}
-
-class FeedItemVideo extends Component {
-  render() {
-    return (
-      <Card>
-        <CardBody>
-          <CardTitle>{this.props.item.name || this.props.item.story}</CardTitle>
-          <CardSubtitle>
-            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
-                      target="_blank" href={this.props.item.permalink_url}>
-              {formatDateRelatively(this.props.item.created_time)}
-            </CardLink>
-          </CardSubtitle>
-        </CardBody>
-        {this.props.item.message && <CardBody>
-          <CardText>{this.props.item.message}</CardText>
-        </CardBody>}
-        <ReactPlayer width="100%" url={this.props.item.source}
-                     playing={this.props.playing} controls
-                     onPlay={() => {
-                       console.log('playing', this);
-                       this.props.playing = false;
-                     }}/>
-      </Card>
-    );
-  }
-}
-FeedItemVideo.defaultProps = {
-  playing: false
-};
-
-class FeedItemPhoto extends Component {
-  render() {
-    return (
-      <Card>
-        <CardBody>
-          <CardTitle>{this.props.item.story}</CardTitle>
-          <CardSubtitle>
-            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
-                      target="_blank" href={this.props.item.permalink_url}>
-              {formatDateRelatively(this.props.item.created_time)}
-            </CardLink>
-          </CardSubtitle>
-        </CardBody>
-        {this.props.item.message && <CardBody>
-          <CardText>{this.props.item.message}</CardText>
-        </CardBody>}
-        <CardImg width="100%" src={this.props.item.full_picture}/>
-      </Card>
-    );
-  }
-}
-
-class FeedItemEvent extends Component {
-  render() {
-    return (
-      <Card>
-        <CardBody>
-          <CardTitle>{this.props.item.story}</CardTitle>
-          <CardSubtitle>
-            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
-                      target="_blank" href={this.props.item.permalink_url}>
-              {formatDateRelatively(this.props.item.created_time)}
-            </CardLink>
-          </CardSubtitle>
-        </CardBody>
-        <CardBody>
-          <CardText>{this.props.item.name}</CardText>
-        </CardBody>
-        <CardImg width="100%" src={this.props.item.full_picture}/>
-      </Card>
-    );
-  }
-}
-
-class FeedItemStatus extends Component {
-  render() {
-    return (
-      <Card>
-        <CardBody>
-          <CardTitle>{this.props.item.story}</CardTitle>
-          <CardSubtitle>
-            <CardLink title={fullDateFormat(this.props.item.created_time)} className="text-muted"
-                      target="_blank" href={this.props.item.permalink_url}>
-              {formatDateRelatively(this.props.item.created_time)}
-            </CardLink>
-          </CardSubtitle>
-        </CardBody>
-        {this.props.item.message && <CardBody>
-          <CardText>{this.props.item.message}</CardText>
-        </CardBody>}
-        <CardImg width="100%" src={this.props.item.full_picture}/>
-      </Card>
-    );
-  }
-}
-
 
 export default News;
