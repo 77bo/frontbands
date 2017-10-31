@@ -32,7 +32,7 @@ class News extends Component {
     axios.get(url, {
       params: {
         fields: [
-          'id', 'type', 'story', 'full_picture', 'message',
+          'id', 'type', 'story', 'full_picture', 'attachments', 'message',
           'link', 'name', 'permalink_url', 'place', 'source',
           'created_time', 'description', 'shares', 'caption'
         ],

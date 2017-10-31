@@ -15,7 +15,7 @@ class FeedItem extends Component {
       let component;
       switch (item.type) {
         case 'link':
-          component = <FeedItemLink item={item}/>;
+          component = <FeedItemLink item={item} videoStartedPlaying={this.props.videoStartedPlaying}/>;
           break;
         case 'video':
           component = <FeedItemVideo item={item} videoStartedPlaying={this.props.videoStartedPlaying}/>;
@@ -59,6 +59,7 @@ class FeedItem extends Component {
 
 class FeedItemLink extends Component {
   render() {
+    var isSoundCloudLink = this.props.item.link && this.props.item.link.includes('soundcloud.com');
     return (
       <Card>
         <CardBody>
@@ -73,7 +74,18 @@ class FeedItemLink extends Component {
         {this.props.item.message && <CardBody>
           <CardText>{this.props.item.message}</CardText>
         </CardBody>}
-        <img width="100%" src={this.props.item.full_picture}/>
+        {!isSoundCloudLink &&
+          <img width="100%" src={this.props.item.full_picture}/>
+        }
+        {isSoundCloudLink &&
+          <ReactPlayer width="100%" url={this.props.item.link}
+                       onClick={this.handle}
+                       playing={this.props.item.playing} controls
+                       onPlay={() => {
+                         this.props.item.playing = true;
+                         this.props.videoStartedPlaying(this.props.item.id);
+                       }}/>
+        }
       </Card>
     );
   }
